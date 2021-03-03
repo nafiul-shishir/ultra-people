@@ -1,24 +1,41 @@
-import logo from './logo.svg';
+
+import { useEffect, useState } from 'react';
+import data from '../src/Data/data.json'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUserPlus } from '@fortawesome/free-solid-svg-icons'
 import './App.css';
+import People from './People/People';
+import Cart from './People/Cart/Cart';
 
 function App() {
+  const [cart,setCart] = useState([])
+  const [people,setPeople] = useState([]);
+  
+
+  useEffect(() => {
+    setPeople(data)
+    
+  },[])
+
+  const handleAddPerson = (people) => {
+    console.log('person added',people);
+    const newCart = [...cart,people]
+    setCart(newCart)
+  
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+   <div className="collection-container">
+     <div className="user-info">
+      {
+       people.map(people => <People handleAddPerson ={handleAddPerson}people={people} key={people.id}> </People>)
+      }
+     </div>
+     <div className="cart-info">
+      <h2 > <FontAwesomeIcon icon={faUserPlus} />  {cart.length} </h2>
+      <Cart cart={cart}></Cart>
+     </div>
+   </div>
+   
   );
 }
 
